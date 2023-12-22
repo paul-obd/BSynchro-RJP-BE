@@ -126,9 +126,9 @@ namespace BS_RJP.BLL
             return result;
         }
 
-        public async Task<List<Customer>> GetCustomersByEntryUserId()
+        public async Task<List<Customer>> GetCustomersByEntryUserIdAdvancedAsync()
         {
-            var preResult = await _DALC.GetCustomersByEntryUserId(_CurrentUserId);
+            var preResult = await _DALC.GetCustomersByEntryUserIdAdvancedAsync(_CurrentUserId);
             var result = _mapper.Map<List<Customer>>(preResult);
             return result;
         }

@@ -94,5 +94,7 @@ namespace BS_RJP.DAL
             }
             return param.CustomerId;
         }
+
+        
     }
 }
