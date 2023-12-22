@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace BS_RJP.BLL
 {
-    public class LoginResponse
+    public enum EnumSubmitMode
     {
-        public User User { get; set; }
-        public string Token { get; set; }
+        Add,
+        Update
     }
-
 }

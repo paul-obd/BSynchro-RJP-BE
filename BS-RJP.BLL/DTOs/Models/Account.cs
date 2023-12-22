@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RJP.BLL;
-
+namespace BS_RJP.BLL;
 public partial class Account
 {
     public int AccountId { get; set; }
