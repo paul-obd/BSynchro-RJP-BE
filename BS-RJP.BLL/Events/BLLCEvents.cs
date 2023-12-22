@@ -11,6 +11,15 @@ namespace BS_RJP.BLL
     {
 
         //Here I declare all of my delegates and events
+        public delegate void PreEventHandlerSubmitAccountAsync(Account account, EnumSubmitMode enumSubmitMode);
+        public delegate void PostEventHandlerSubmitAccountAsync(Account account, EnumSubmitMode enumSubmitMode);
+        public event PreEventHandlerSubmitAccountAsync OnPreEventSubmitAccountAsync;
+        public event PostEventHandlerSubmitAccountAsync OnPostEventSubmitAccountAsync;
+
+        public delegate void PreEventHandlerSubmitTransactionAsync(Transaction transaction, EnumSubmitMode enumSubmitMode);
+        public delegate void PostEventHandlerSubmitTransactionAsync(Transaction transaction, EnumSubmitMode enumSubmitMode);
+        public event PreEventHandlerSubmitTransactionAsync OnPreEventSubmitTransactionAsync;
+        public event PostEventHandlerSubmitTransactionAsync OnPostEventSubmitTransactionAsync;
 
 
         public void SubscribeToEvents()
@@ -19,11 +28,11 @@ namespace BS_RJP.BLL
         }
 
         #region <Entity> Events Handlers
-      
+
         #endregion
 
 
     }
 
-  
+
 }
