@@ -1,6 +1,8 @@
 using BS_RJP.BLL;
 using BS_RJP.DAL;
+using BS_RJP.EF.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -11,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IDALC, DALC>();
 builder.Services.AddScoped<IBLLC, BLLC>();
+builder.Services.AddDbContext<DbBsynchroRjpContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DB-CON-STR")));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
