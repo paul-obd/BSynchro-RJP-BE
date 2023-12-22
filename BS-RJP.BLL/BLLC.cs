@@ -14,6 +14,7 @@ namespace BS_RJP.BLL
         public BLLC(IDALC DALC, IMapper mapper)
         {
             _DALC = DALC;
+            _mapper = mapper;
             SubscribeToEvents();
         }
         public async Task<LoginResponse> Login(ParamsLogin param)
@@ -58,17 +59,18 @@ namespace BS_RJP.BLL
 
                     if (OnPreEventSubmitAccountAsync != null)
                     {
-                        OnPreEventSubmitAccountAsync(param, oEditModeFlag);
+                       await OnPreEventSubmitAccountAsync(param, oEditModeFlag);
                     }
 
                     var mParam = _mapper.Map<TblAccount>(param);
                     var oId = await _DALC.SubmitAccountAsync(mParam);
-                    param.CustomerId = oId;
+                    param.AccountId = oId;
 
                     if (OnPostEventSubmitAccountAsync != null)
                     {
-                        OnPostEventSubmitAccountAsync(param, oEditModeFlag);
+                        await OnPostEventSubmitAccountAsync(param, oEditModeFlag);
                     }
+                    scope.Complete();
                 }
                 catch (Exception e)
                 {
@@ -89,7 +91,7 @@ namespace BS_RJP.BLL
 
                     if (OnPreEventSubmitTransactionAsync != null)
                     {
-                        OnPreEventSubmitTransactionAsync(param, oEditModeFlag);
+                       await OnPreEventSubmitTransactionAsync(param, oEditModeFlag);
                     }
 
                     var mParam = _mapper.Map<TblTransaction>(param);
@@ -98,12 +100,58 @@ namespace BS_RJP.BLL
 
                     if (OnPostEventSubmitTransactionAsync != null)
                     {
-                        OnPostEventSubmitTransactionAsync(param, oEditModeFlag);
+                        await OnPostEventSubmitTransactionAsync(param, oEditModeFlag);
                     }
+
+                    scope.Complete();
                 }
                 catch (Exception e)
                 {
                     throw new BLLException("Error while SubmitTransactionAsync: " + e.Message);
+                }
+            }
+        }
+
+        public async Task<TransactionType> GetTransactionTypeByValue(ParamsGetTransactionTypeByValue param)
+        {
+            var preResult = await _DALC.GetTransactionTypeByValueAsync(param.Value);
+            var result = _mapper.Map<TransactionType>(preResult);
+            return result;
+        }
+        
+        public async Task<Account> GetAccountByIdAsync(ParamsGetAccountByIdAsync param)
+        {
+            var preResult = await _DALC.GetAccountByIdAsync(param.AccountId);
+            var result = _mapper.Map<Account>(preResult);
+            return result;
+        }
+
+        public async Task<List<Customer>> GetCustomersByEntryUserId()
+        {
+            var preResult = await _DALC.GetCustomersByEntryUserId(_CurrentUserId);
+            var result = _mapper.Map<List<Customer>>(preResult);
+            return result;
+        }
+
+        public async Task SubmitCustomerAsync(Customer param)
+        {
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                try
+                {
+                    EnumSubmitMode oEditModeFlag = EnumSubmitMode.Add;
+                    if (param.CustomerId > 0) { oEditModeFlag = EnumSubmitMode.Update; }
+                    if (_CurrentUserId != 0) { param.EntryUserId = _CurrentUserId; }
+
+                    var mParam = _mapper.Map<TblCustomer>(param);
+                    var oId = await _DALC.SubmitCustomerAsync(mParam);
+                    param.CustomerId = oId;
+
+                    scope.Complete();
+                }
+                catch (Exception e)
+                {
+                    throw new BLLException("Error while SubmitCustomerAsync: " + e.Message);
                 }
             }
         }

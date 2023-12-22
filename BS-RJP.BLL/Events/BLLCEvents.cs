@@ -11,23 +11,39 @@ namespace BS_RJP.BLL
     {
 
         //Here I declare all of my delegates and events
-        public delegate void PreEventHandlerSubmitAccountAsync(Account account, EnumSubmitMode enumSubmitMode);
-        public delegate void PostEventHandlerSubmitAccountAsync(Account account, EnumSubmitMode enumSubmitMode);
+        public delegate Task PreEventHandlerSubmitAccountAsync(Account account, EnumSubmitMode enumSubmitMode);
+        public delegate Task PostEventHandlerSubmitAccountAsync(Account account, EnumSubmitMode enumSubmitMode);
         public event PreEventHandlerSubmitAccountAsync OnPreEventSubmitAccountAsync;
         public event PostEventHandlerSubmitAccountAsync OnPostEventSubmitAccountAsync;
 
-        public delegate void PreEventHandlerSubmitTransactionAsync(Transaction transaction, EnumSubmitMode enumSubmitMode);
-        public delegate void PostEventHandlerSubmitTransactionAsync(Transaction transaction, EnumSubmitMode enumSubmitMode);
+        public delegate Task PreEventHandlerSubmitTransactionAsync(Transaction transaction, EnumSubmitMode enumSubmitMode);
+        public delegate Task PostEventHandlerSubmitTransactionAsync(Transaction transaction, EnumSubmitMode enumSubmitMode);
         public event PreEventHandlerSubmitTransactionAsync OnPreEventSubmitTransactionAsync;
         public event PostEventHandlerSubmitTransactionAsync OnPostEventSubmitTransactionAsync;
+
+        public delegate Task PreEventHandlerOpenNewCurrentAccount(ParamsOpenNewCurrentAccount param);
+        public delegate Task PostEventHandlerOpenNewCurrentAccount(ParamsOpenNewCurrentAccount param, int AccountId);
+        public event PreEventHandlerOpenNewCurrentAccount OnPreEventOpenNewCurrentAccount;
+        public event PostEventHandlerOpenNewCurrentAccount OnPostEventOpenNewCurrentAccount;
 
 
         public void SubscribeToEvents()
         {
             //here I subscribe to my events
+            SubscribeOpenNewCurrentAccountEventsHandlers();
+            SubscribeSubmitTransactionEventsHandlers();
         }
 
-        #region <Entity> Events Handlers
+        #region Accounts & Transactions Events Handlers
+        public void SubscribeOpenNewCurrentAccountEventsHandlers()
+        {
+            OnPostEventOpenNewCurrentAccount += CascadeOpenNewCurrentAccountTransactions;
+        }
+
+        public void SubscribeSubmitTransactionEventsHandlers()
+        {
+            OnPostEventSubmitTransactionAsync += LogicHandlerPostSubmitTransactionUpdateAccountBalance;
+        }
 
         #endregion
 

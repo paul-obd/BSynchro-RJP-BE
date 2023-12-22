@@ -12,7 +12,11 @@ namespace BS_RJP.BLL
         int _CurrentUserId { get; set; }
         Task<LoginResponse> Login(ParamsLogin param);
         Task SubmitAccountAsync(Account param);
+        Task SubmitCustomerAsync(Customer param);
         Task SubmitTransactionAsync(Transaction param);
         Task<Customer> GetCustomerByIdAdvancedAsync(ParamsGetCustomerByIdAdvancedAsync param);
+        Task<TransactionType> GetTransactionTypeByValue(ParamsGetTransactionTypeByValue param);
+        Task<Account> GetAccountByIdAsync(ParamsGetAccountByIdAsync param);
+        Task<List<Customer>> GetCustomersByEntryUserId();
     }
 }
