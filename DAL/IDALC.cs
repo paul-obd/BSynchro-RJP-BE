@@ -17,6 +17,6 @@ namespace BS_RJP.DAL
         Task<TblTransactionType> GetTransactionTypeByValueAsync(string value);
         Task<TblAccount> GetAccountByIdAsync(int AccountId);
 
-        Task<List<TblCustomer>> GetCustomersByEntryUserId(int EntryUserId);
+        Task<List<TblCustomer>> GetCustomersByEntryUserIdAdvancedAsync(int EntryUserId);
     }
 }

@@ -17,6 +17,6 @@ namespace BS_RJP.BLL
         Task<Customer> GetCustomerByIdAdvancedAsync(ParamsGetCustomerByIdAdvancedAsync param);
         Task<TransactionType> GetTransactionTypeByValue(ParamsGetTransactionTypeByValue param);
         Task<Account> GetAccountByIdAsync(ParamsGetAccountByIdAsync param);
-        Task<List<Customer>> GetCustomersByEntryUserId();
+        Task<List<Customer>> GetCustomersByEntryUserIdAdvancedAsync();
     }
 }
