@@ -42,6 +42,10 @@ namespace BS_RJP.BLL
         }
         public async Task<Customer> GetCustomerByIdAdvancedAsync(ParamsGetCustomerByIdAdvancedAsync param)
         {
+            if (param == null || param.CustomerId == null || param.CustomerId <= 0)
+            {
+                throw new BLLException("Invalid Customer Id!");
+            }
             var preResult = await _DALC.GetCustomerByIdAdvancedAsync(param.CustomerId);
             var result = _mapper.Map<Customer>(preResult);
             return result;
@@ -59,7 +63,7 @@ namespace BS_RJP.BLL
 
                     if (OnPreEventSubmitAccountAsync != null)
                     {
-                       await OnPreEventSubmitAccountAsync(param, oEditModeFlag);
+                        await OnPreEventSubmitAccountAsync(param, oEditModeFlag);
                     }
 
                     var mParam = _mapper.Map<TblAccount>(param);
@@ -74,7 +78,7 @@ namespace BS_RJP.BLL
                 }
                 catch (Exception e)
                 {
-                    throw new BLLException("Error while SubmitAccountAsync: " + e.Message);
+                    throw new Exception("Error while SubmitAccountAsync: " + e.Message);
                 }
             }
         }
@@ -86,12 +90,12 @@ namespace BS_RJP.BLL
                 try
                 {
                     EnumSubmitMode oEditModeFlag = EnumSubmitMode.Add;
-                    if (param.TransactionId > 0){oEditModeFlag = EnumSubmitMode.Update;}
+                    if (param.TransactionId > 0) { oEditModeFlag = EnumSubmitMode.Update; }
                     if (_CurrentUserId != 0) { param.EntryUserId = _CurrentUserId; }
 
                     if (OnPreEventSubmitTransactionAsync != null)
                     {
-                       await OnPreEventSubmitTransactionAsync(param, oEditModeFlag);
+                        await OnPreEventSubmitTransactionAsync(param, oEditModeFlag);
                     }
 
                     var mParam = _mapper.Map<TblTransaction>(param);
@@ -107,20 +111,28 @@ namespace BS_RJP.BLL
                 }
                 catch (Exception e)
                 {
-                    throw new BLLException("Error while SubmitTransactionAsync: " + e.Message);
+                    throw new Exception("Error while SubmitTransactionAsync: " + e.Message);
                 }
             }
         }
 
         public async Task<TransactionType> GetTransactionTypeByValue(ParamsGetTransactionTypeByValue param)
         {
+            if (param == null || param.Value == null)
+            {
+                throw new BLLException("Invalid Transaction Type value!");
+            }
             var preResult = await _DALC.GetTransactionTypeByValueAsync(param.Value);
             var result = _mapper.Map<TransactionType>(preResult);
             return result;
         }
-        
+
         public async Task<Account> GetAccountByIdAsync(ParamsGetAccountByIdAsync param)
         {
+            if (param == null || param.AccountId == null || param.AccountId <= 0)
+            {
+                throw new BLLException("Invalid Account Id!");
+            }
             var preResult = await _DALC.GetAccountByIdAsync(param.AccountId);
             var result = _mapper.Map<Account>(preResult);
             return result;
@@ -128,6 +140,10 @@ namespace BS_RJP.BLL
 
         public async Task<List<Customer>> GetCustomersByEntryUserIdAdvancedAsync()
         {
+            if (_CurrentUserId == null ||  _CurrentUserId <= 0)
+            {
+                throw new BLLException("Invalid Entry User Id!");
+            }
             var preResult = await _DALC.GetCustomersByEntryUserIdAdvancedAsync(_CurrentUserId);
             var result = _mapper.Map<List<Customer>>(preResult);
             return result;
@@ -151,7 +167,7 @@ namespace BS_RJP.BLL
                 }
                 catch (Exception e)
                 {
-                    throw new BLLException("Error while SubmitCustomerAsync: " + e.Message);
+                    throw new Exception("Error while SubmitCustomerAsync: " + e.Message);
                 }
             }
         }

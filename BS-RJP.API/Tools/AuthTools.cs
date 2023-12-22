@@ -39,7 +39,7 @@ namespace BS_RJP.API.Controllers
             return tokenHandler.WriteToken(token);
         }
 
-        public static void ResolveToken(HttpContext HttpContext, ref IBLLC _BLC)
+        public static void ResolveToken(HttpContext HttpContext, IBLLC _BLC)
         {
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             var userId = 0;
