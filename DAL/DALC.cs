@@ -25,9 +25,34 @@ namespace BS_RJP.DAL
             return response;
         }
 
+        public async Task<TblAccount> GetAccountByIdAsync(int AccountId)
+        {
+            var response = await _dbContext.TblAccounts
+                 .Where(a => a.AccountId == AccountId)
+                 .FirstOrDefaultAsync();
+            return response;
+        }
+        public async Task<List<TblCustomer>> GetCustomersByEntryUserIdAdvancedAsync(int EntryUserId)
+        {
+            var response = await _dbContext.TblCustomers
+                .Include(a => a.TblAccounts)
+                .ThenInclude(z => z.TblTransactions)
+                .Where(a => a.EntryUserId == EntryUserId)
+                .ToListAsync();
+            return response;
+        }
+
+        public async Task<TblTransactionType> GetTransactionTypeByValueAsync(string value)
+        {
+            var response = await _dbContext.TblTransactionTypes
+                .Where(a => a.Value.ToLower() == value.ToLower())
+                .FirstOrDefaultAsync();
+            return response;
+        }
+
         public async Task<int> SubmitAccountAsync(TblAccount param)
         {
-            if(param.AccountId != 0)
+            if (param.AccountId != 0)
             {
                 _dbContext.TblAccounts.Update(param);
                 await _dbContext.SaveChangesAsync();
@@ -53,6 +78,21 @@ namespace BS_RJP.DAL
                 await _dbContext.SaveChangesAsync();
             }
             return param.TransactionId;
+        }
+
+        public async Task<int> SubmitCustomerAsync(TblCustomer param)
+        {
+            if (param.CustomerId != 0)
+            {
+                _dbContext.TblCustomers.Update(param);
+                await _dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                await _dbContext.TblCustomers.AddAsync(param);
+                await _dbContext.SaveChangesAsync();
+            }
+            return param.CustomerId;
         }
     }
 }

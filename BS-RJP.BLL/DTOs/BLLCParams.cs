@@ -17,4 +17,24 @@ namespace BS_RJP.BLL
         public string Password { get; set; }
 
     }
+
+    public class ParamsOpenNewCurrentAccount
+    {
+        public int CustomerId { get; set; }
+        public decimal InitialCredit { get; set; }
+    }
+
+    public class ParamsGetTransactionTypeByValue
+    {
+        public string Value { get; set; }
+    }
+    public class ParamsGetAccountByIdAsync
+    {
+        public int AccountId { get; set; }
+    }
+    
+    public class ParamsGetCustomersByEntryUserId
+    {
+        public int EntryUserId { get; set; }
+    }
 }

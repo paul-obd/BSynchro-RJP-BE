@@ -12,6 +12,11 @@ namespace BS_RJP.DAL
         Task<TblUser> GetUserByEmailOrUsername(string ParamEmailOrUsername);
         Task<int> SubmitAccountAsync(TblAccount param);
         Task<int> SubmitTransactionAsync(TblTransaction param);
+        Task<int> SubmitCustomerAsync(TblCustomer param);
         Task<TblCustomer> GetCustomerByIdAdvancedAsync(int CustomerId);
+        Task<TblTransactionType> GetTransactionTypeByValueAsync(string value);
+        Task<TblAccount> GetAccountByIdAsync(int AccountId);
+
+        Task<List<TblCustomer>> GetCustomersByEntryUserId(int EntryUserId);
     }
 }
