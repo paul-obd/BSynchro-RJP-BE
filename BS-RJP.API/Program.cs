@@ -1,20 +1,23 @@
 using BS_RJP.BLL;
+using BS_RJP.BLL.AutoMapper;
 using BS_RJP.DAL;
 using BS_RJP.EF.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddScoped<IDALC, DALC>();
 builder.Services.AddScoped<IBLLC, BLLC>();
 builder.Services.AddDbContext<DbBsynchroRjpContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DB-CON-STR")));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DB-CON-STR")), ServiceLifetime.Scoped);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -32,6 +35,8 @@ options.TokenValidationParameters = new TokenValidationParameters
     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
 });
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,7 +47,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(builder =>
+{
+    builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+});
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BS_RJP.EF.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +11,6 @@ namespace BS_RJP.BLL
     //here I put all the logical handlers (all the functions where i'm applying a business rule)
     public partial class BLLC
     {
-
         async Task LogicHandlerPostSubmitTransactionUpdateAccountBalance(Transaction transaction, EnumSubmitMode enumSubmitMode)
         {
             if (enumSubmitMode == EnumSubmitMode.Add)
@@ -20,11 +21,11 @@ namespace BS_RJP.BLL
                     {
                         AccountId = transaction.AccountId,
                     };
-                    var oAccount = await GetAccountByIdAsync(oParamsGetAccountByIdAsync);
-                    if(oAccount != null) 
+                    var oAccount = await GetAccountByIdAsync(oParamsGetAccountByIdAsync).ConfigureAwait(false); ;
+                    if(oAccount != null)
                     {
                         oAccount.Balance += transaction.Amount;
-                        await SubmitAccountAsync(oAccount);
+                        await SubmitAccountAsync(oAccount).ConfigureAwait(false);
                     }
                 }
             }

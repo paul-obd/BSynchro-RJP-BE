@@ -1,5 +1,9 @@
-﻿using BS_RJP.EF.Models;
+﻿using Azure.Core;
+using BS_RJP.EF.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Identity.Client;
+using System.Runtime.Intrinsics.Arm;
 
 namespace BS_RJP.DAL
 {
@@ -54,7 +58,11 @@ namespace BS_RJP.DAL
         {
             if (param.AccountId != 0)
             {
-                _dbContext.TblAccounts.Update(param);
+                //Paul => NOTE: good practice => If entity already attached in the context get it and update it do not attach it again cz errors will occur
+                var toBeUpdated = await _dbContext.TblAccounts.FindAsync(param.AccountId);
+                toBeUpdated.CustomerId = param.CustomerId;
+                toBeUpdated.Balance = param.Balance;
+                _dbContext.TblAccounts.Update(toBeUpdated);
                 await _dbContext.SaveChangesAsync();
             }
             else
@@ -62,6 +70,8 @@ namespace BS_RJP.DAL
                 await _dbContext.TblAccounts.AddAsync(param);
                 await _dbContext.SaveChangesAsync();
             }
+
+            await _dbContext.SaveChangesAsync();
             return param.AccountId;
         }
 
@@ -94,7 +104,6 @@ namespace BS_RJP.DAL
             }
             return param.CustomerId;
         }
-
         
     }
 }

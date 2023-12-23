@@ -22,15 +22,19 @@ namespace BS_RJP.BLL.AutoMapper
                          .ReverseMap();
 
             CreateMap<Account, TblAccount>()
-                .ForMember(x => x.TblTransactions, opt => opt.MapFrom(z => z.Transactions));
+                .ForMember(x => x.TblTransactions, opt => opt.MapFrom(z => z.Transactions))
+                 .ReverseMap();
 
             CreateMap<Customer, TblCustomer>()
-                 .ForMember(x => x.TblAccounts, opt => opt.MapFrom(z => z.Accounts));
+                 .ForMember(x => x.TblAccounts, opt => opt.MapFrom(z => z.Accounts))
+                 .ReverseMap();
 
             CreateMap<TransactionType, TblTransactionType>()
-                 .ForMember(x => x.TblTransactions, opt => opt.MapFrom(z => z.Transactions));
+                 .ForMember(x => x.TblTransactions, opt => opt.MapFrom(z => z.Transactions))
+                 .ReverseMap();
 
-            CreateMap<Transaction, TblTransaction>();
+            CreateMap<Transaction, TblTransaction>()
+                .ReverseMap();
         }
       
     }
