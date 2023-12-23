@@ -13,34 +13,29 @@ namespace BS_RJP.BLL
     {
         public async Task OpenNewCurrentAccount(ParamsOpenNewCurrentAccount param)
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            try
             {
-                try
+                if (OnPreEventOpenNewCurrentAccount != null)
                 {
-                    if (OnPreEventOpenNewCurrentAccount != null)
-                    {
-                       await OnPreEventOpenNewCurrentAccount(param);
-                    }
-
-                    Account o = new Account()
-                    {
-                        CustomerId = param.CustomerId,
-                        Balance = 0,
-                        EntryUserId = _CurrentUserId
-                    };
-                    await SubmitAccountAsync(o);
-
-                    if (OnPostEventOpenNewCurrentAccount != null)
-                    {
-                        await OnPostEventOpenNewCurrentAccount(param, o.AccountId);
-                    }
-
-                    scope.Complete();
+                    await OnPreEventOpenNewCurrentAccount(param);
                 }
-                catch (Exception e)
+
+                Account o = new Account()
                 {
-                    throw new BLLException("Error while OpenNewCurrentAccount: " + e.Message);
+                    CustomerId = param.CustomerId,
+                    Balance = 0,
+                    EntryUserId = _CurrentUserId
+                };
+                await SubmitAccountAsync(o);
+
+                if (OnPostEventOpenNewCurrentAccount != null)
+                {
+                    await OnPostEventOpenNewCurrentAccount(param, o);
                 }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error while OpenNewCurrentAccount: " + e.Message);
             }
         }
     }

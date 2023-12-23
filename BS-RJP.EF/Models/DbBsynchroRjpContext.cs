@@ -13,7 +13,6 @@ public partial class DbBsynchroRjpContext : DbContext
     public DbBsynchroRjpContext(DbContextOptions<DbBsynchroRjpContext> options)
         : base(options)
     {
-        ChangeTracker.LazyLoadingEnabled = false;
     }
 
     public virtual DbSet<TblAccount> TblAccounts { get; set; }
@@ -26,7 +25,9 @@ public partial class DbBsynchroRjpContext : DbContext
 
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+    
+    }
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
 //        => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=DbBSynchroRJP;Trusted_Connection=True;TrustServerCertificate=True");
 

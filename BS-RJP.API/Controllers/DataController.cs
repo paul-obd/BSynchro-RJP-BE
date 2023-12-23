@@ -1,11 +1,13 @@
 ﻿using BS_RJP.BLL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BS_RJP.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DataController : ControllerBase
     {
         private readonly IBLLC _BLLC;
@@ -15,6 +17,7 @@ namespace BS_RJP.API.Controllers
         }
 
         [HttpPost]
+        [Route("OpenNewCurrentAccount")]
         public async Task<APIResponseOpenNewCurrentAccount> OpenNewCurrentAccount(ParamsOpenNewCurrentAccount param)
         {
             APIResponseOpenNewCurrentAccount response = new APIResponseOpenNewCurrentAccount();
@@ -41,6 +44,7 @@ namespace BS_RJP.API.Controllers
         }
 
         [HttpPost]
+        [Route("SubmitCustomerAsync")]
         public async Task<APIResponseSubmitCustomerAsync> SubmitCustomerAsync(Customer param)
         {
             APIResponseSubmitCustomerAsync response = new APIResponseSubmitCustomerAsync();
@@ -68,6 +72,7 @@ namespace BS_RJP.API.Controllers
         }
 
         [HttpGet]
+        [Route("GetCustomersByEntryUserIdAdvancedAsync")]
         public async Task<APIResponseGetCustomersByEntryUserIdAdvancedAsync> GetCustomersByEntryUserIdAdvancedAsync()
         {
             APIResponseGetCustomersByEntryUserIdAdvancedAsync response = new APIResponseGetCustomersByEntryUserIdAdvancedAsync();
@@ -94,6 +99,7 @@ namespace BS_RJP.API.Controllers
         }
 
         [HttpPost]
+        [Route("GetCustomerByIdAdvancedAsync")]
         public async Task<APIResponseGetCustomerByIdAdvancedAsync> GetCustomerByIdAdvancedAsync(ParamsGetCustomerByIdAdvancedAsync param)
         {
             APIResponseGetCustomerByIdAdvancedAsync response = new APIResponseGetCustomerByIdAdvancedAsync();

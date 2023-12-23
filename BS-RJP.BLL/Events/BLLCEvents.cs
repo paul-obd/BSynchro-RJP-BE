@@ -22,7 +22,7 @@ namespace BS_RJP.BLL
         public event PostEventHandlerSubmitTransactionAsync OnPostEventSubmitTransactionAsync;
 
         public delegate Task PreEventHandlerOpenNewCurrentAccount(ParamsOpenNewCurrentAccount param);
-        public delegate Task PostEventHandlerOpenNewCurrentAccount(ParamsOpenNewCurrentAccount param, int AccountId);
+        public delegate Task PostEventHandlerOpenNewCurrentAccount(ParamsOpenNewCurrentAccount param, Account Account);
         public event PreEventHandlerOpenNewCurrentAccount OnPreEventOpenNewCurrentAccount;
         public event PostEventHandlerOpenNewCurrentAccount OnPostEventOpenNewCurrentAccount;
 

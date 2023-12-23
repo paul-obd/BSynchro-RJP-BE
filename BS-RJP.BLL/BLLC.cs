@@ -99,7 +99,7 @@ namespace BS_RJP.BLL
                     }
 
                     var mParam = _mapper.Map<TblTransaction>(param);
-                    var oId = await _DALC.SubmitTransactionAsync(mParam);
+                    var oId = await _DALC.SubmitTransactionAsync(mParam).ConfigureAwait(false); ;
                     param.TransactionId = oId;
 
                     if (OnPostEventSubmitTransactionAsync != null)
@@ -160,7 +160,7 @@ namespace BS_RJP.BLL
                     if (_CurrentUserId != 0) { param.EntryUserId = _CurrentUserId; }
 
                     var mParam = _mapper.Map<TblCustomer>(param);
-                    var oId = await _DALC.SubmitCustomerAsync(mParam);
+                    var oId = await _DALC.SubmitCustomerAsync(mParam).ConfigureAwait(false); ;
                     param.CustomerId = oId;
 
                     scope.Complete();
